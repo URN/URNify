@@ -81,30 +81,74 @@ class URNify {
 
         // Add custom fields that users will be able to change for their show page
         // Each option should have a name as well a 'nice' name for presentation
-        $this->custom_show_options[] = array('fb_link', 'Facebook Link');
-        $this->custom_show_options[] = array('tw_link', 'Twitter Link');
-        $this->custom_show_options[] = array('show_category', 'Show Category');
+        $this->custom_show_options[] = array(
+            'type' => 'text',
+            'slug' => 'fb_link',
+            'name' => 'Facebook Link'
+        );
+        $this->custom_show_options[] = array(
+            'type' => 'text',
+            'slug' => 'tw_link',
+            'name' => 'Twitter Link'
+        );
+        $this->custom_show_options[] = array(
+            'type' => 'text',
+            'slug' => 'show_category',
+            'name' => 'Show Category'
+        );
+        $this->custom_show_options[] = array(
+            'type' => 'checkbox',
+            'slug' => 'ended',
+            'name' => 'Ended',
+            'desc' => 'Has the podcast ended?'
+        );
+        $this->custom_show_options[] = array(
+            'type' => 'checkbox',
+            'slug' => 'hidden',
+            'name' => 'Hidden',
+            'desc' => 'Hide this podcast from view?'
+        );
 
         // Add all custom show options to the 'add show' page
         add_action('shows_add_form_fields', function($term) {
             foreach ($this->custom_show_options as $option) {
-                echo '<div class="form-field term-' . $option[0] .'-wrap">
-                          <label for="' . $option[0] . '">' . $option[1] . '</label>
-                          <input name="' . $option[0] . '" id="' . $option[0] . '" value="" type="text">
-                      </div>';
+                if ($option['type'] === 'text') {
+                    echo '<div class="form-field term-' . $option['slug'] .'-wrap">
+                              <label for="' . $option['slug'] . '">' . $option['name'] . '</label>
+                              <input name="' . $option['slug'] . '" id="' . $option['slug'] . '" value="" type="text">
+                          </div>';
+                }
+                else if ($option['type'] === 'checkbox') {
+                    echo '<div class="form-field term-' . $option['slug'] .'-wrap">
+                              <label for="' . $option['slug'] . '" style="display:inline-block;margin-right:10px">' . $option['name'] . '</label>
+                              <input name="' . $option['slug'] . '" id="' . $option['slug'] . '" value="true" type="checkbox">
+                              <p>' . $option['desc'] . '</p>
+                          </div>';
+                }
             }
         });
 
         // Add all custom show options to the 'edit show' page
         add_action('shows_edit_form_fields', function($term) {
             foreach ($this->custom_show_options as $option) {
-                $value = get_option('show_' . $term->term_id .'_custom_option_' . $option[0]);
-                echo '<tr class="form-field term-' . $option[0] .'-wrap">
-                          <th scope="row">
-                              <label for="' . $option[0] .'">' . $option[1] .'</label>
-                          </th>
-                          <td><input name="' . $option[0] .'" id="' . $option[0] .'" value="' . $value . '" type="text">
-                      </tr>';
+                $value = get_option('show_' . $term->term_id .'_custom_option_' . $option['slug']);
+
+                if ($option['type'] === 'text') {
+                    echo '<tr class="form-field term-' . $option['slug'] .'-wrap">
+                              <th scope="row">
+                                  <label for="' . $option['slug'] .'">' . $option['name'] .'</label>
+                              </th>
+                              <td><input name="' . $option['slug'] .'" id="' . $option['slug'] .'" value="' . $value . '" type="text">
+                          </tr>';
+                }
+                else if ($option['type'] === 'checkbox') {
+                    $checked = $value === 'true' ? 'checked' : '';
+                    echo '<tr class="form-field term-' . $option['slug'] .'-wrap">
+                              <th scope="row"><label for="' . $option['slug'] .'">' . $option['name'] .'</label></th>
+                              <td><input ' . $checked . ' name="' . $option['slug'] .'" id="' . $option['slug'] .'" value="' . $value . '" type="checkbox">
+                              <p class="description" style="display:inline-block;">' . $option['desc'] . '</p></td>
+                          </tr>';
+                }
             }
         });
 
@@ -116,7 +160,17 @@ class URNify {
     // Save the show's custom options (e.g Facebook link) to the database.
     public function save_custom_show_options($term_id) {
         foreach($this->custom_show_options as $option) {
-            update_option('show_' . $term_id .'_custom_option_' . $option[0], $_POST[$option[0]]);
+            if ($option['type'] === 'text') {
+                update_option('show_' . $term_id .'_custom_option_' . $option['slug'], $_POST[$option['slug']]);
+            }
+            else if ($option['type'] === 'checkbox') {
+                if (isset($_POST[$option['slug']])) {
+                    update_option('show_' . $term_id .'_custom_option_' . $option['slug'], $_POST[$option['slug']]);
+                }
+                else {
+                    update_option('show_' . $term_id .'_custom_option_' . $option['slug'], 'false');
+                }
+            }
         }
     }
 
@@ -135,30 +189,74 @@ class URNify {
 
         // Add custom fields that users will be able to change for their podcast page
         // Each option should have a name as well a 'nice' name for presentation
-        $this->custom_podcast_options[] = array('fb_link', 'Facebook Link');
-        $this->custom_podcast_options[] = array('tw_link', 'Twitter Link');
-        $this->custom_podcast_options[] = array('itunes_link', 'iTunes Link');
+        $this->custom_podcast_options[] = array(
+            'type' => 'text',
+            'slug' => 'fb_link',
+            'name' => 'Facebook Link'
+        );
+        $this->custom_podcast_options[] = array(
+            'type' => 'text',
+            'slug' => 'tw_link',
+            'name' => 'Twitter Link'
+        );
+        $this->custom_podcast_options[] = array(
+            'type' => 'text',
+            'slug' => 'itunes_link',
+            'name' => 'iTunes Link'
+        );
+        $this->custom_podcast_options[] = array(
+            'type' => 'checkbox',
+            'slug' => 'ended',
+            'name' => 'Ended',
+            'desc' => 'Has the podcast ended?'
+        );
+        $this->custom_podcast_options[] = array(
+            'type' => 'checkbox',
+            'slug' => 'hidden',
+            'name' => 'Hidden',
+            'desc' => 'Hide this podcast from view?'
+        );
 
         // Add all custom podcast options to the 'add podcast' page
         add_action('podcasts_add_form_fields', function($term) {
             foreach ($this->custom_podcast_options as $option) {
-                echo '<div class="form-field term-' . $option[0] .'-wrap">
-                          <label for="' . $option[0] . '">' . $option[1] . '</label>
-                          <input name="' . $option[0] . '" id="' . $option[0] . '" value="" type="text">
-                      </div>';
+                if ($option['type'] === 'text') {
+                    echo '<div class="form-field term-' . $option['slug'] .'-wrap">
+                              <label for="' . $option['slug'] . '">' . $option['name'] . '</label>
+                              <input name="' . $option['slug'] . '" id="' . $option['slug'] . '" value="" type="text">
+                          </div>';
+                }
+                else if ($option['type'] === 'checkbox') {
+                    echo '<div class="form-field term-' . $option['slug'] .'-wrap">
+                              <label for="' . $option['slug'] . '" style="display:inline-block;margin-right:10px">' . $option['name'] . '</label>
+                              <input name="' . $option['slug'] . '" id="' . $option['slug'] . '" value="true" type="checkbox">
+                              <p>' . $option['desc'] . '</p>
+                          </div>';
+                }
             }
         });
 
         // Add all custom podcast options to the 'edit podcast' page
         add_action('podcasts_edit_form_fields', function($term) {
             foreach ($this->custom_podcast_options as $option) {
-                $value = get_option('podcast_' . $term->term_id .'_custom_option_' . $option[0]);
-                echo '<tr class="form-field term-' . $option[0] .'-wrap">
-                          <th scope="row">
-                              <label for="' . $option[0] .'">' . $option[1] .'</label>
-                          </th>
-                          <td><input name="' . $option[0] .'" id="' . $option[0] .'" value="' . $value . '" type="text">
-                      </tr>';
+                $value = get_option('podcast_' . $term->term_id .'_custom_option_' . $option['slug']);
+
+                if ($option['type'] === 'text') {
+                    echo '<tr class="form-field term-' . $option['slug'] .'-wrap">
+                              <th scope="row">
+                                  <label for="' . $option['slug'] .'">' . $option['name'] .'</label>
+                              </th>
+                              <td><input name="' . $option['slug'] .'" id="' . $option['slug'] .'" value="' . $value . '" type="text">
+                          </tr>';
+                }
+                else if ($option['type'] === 'checkbox') {
+                    $checked = $value === 'true' ? 'checked' : '';
+                    echo '<tr class="form-field term-' . $option['slug'] .'-wrap">
+                              <th scope="row"><label for="' . $option['slug'] .'">' . $option['name'] .'</label></th>
+                              <td><input ' . $checked . ' name="' . $option['slug'] .'" id="' . $option['slug'] .'" value="' . $value . '" type="checkbox">
+                              <p class="description" style="display:inline-block;">' . $option['desc'] . '</p></td>
+                          </tr>';
+                }
             }
         });
 
@@ -170,7 +268,17 @@ class URNify {
     // Save the podcast's custom options (e.g iTunes link) to the database.
     public function save_custom_podcast_options($term_id) {
         foreach($this->custom_podcast_options as $option) {
-            update_option('podcast_' . $term_id .'_custom_option_' . $option[0], $_POST[$option[0]]);
+            if ($option['type'] === 'text') {
+                update_option('podcast_' . $term_id .'_custom_option_' . $option['slug'], $_POST[$option['slug']]);
+            }
+            else if ($option['type'] === 'checkbox') {
+                if (isset($_POST[$option['slug']])) {
+                    update_option('podcast_' . $term_id .'_custom_option_' . $option['slug'], $_POST[$option['slug']]);
+                }
+                else {
+                    update_option('podcast_' . $term_id .'_custom_option_' . $option['slug'], 'false');
+                }
+            }
         }
     }
 
