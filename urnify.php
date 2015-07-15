@@ -265,9 +265,11 @@ class URNify {
 
     // Update user's committee membership info
     public function save_is_committee($user_id) {
-        if (current_user_can('administrator')) {
-            update_usermeta( $user_id, 'is_committee', $_POST['is_committee'] );
-            update_usermeta( $user_id, 'committee_role', $_POST['committee_role'] );
+        if (current_user_can('administrator') && 
+            isset($_POST['is_committee']) &&
+            isset($_POST['committee_role'])) {
+            update_usermeta($user_id, 'is_committee', $_POST['is_committee']);
+            update_usermeta($user_id, 'committee_role', $_POST['committee_role']);
         }
     }
 
@@ -317,7 +319,7 @@ class URNify {
     public function save_memberships($user_id) {
         if ( current_user_can('editor') || current_user_can('administrator') ) {
             $user_show_terms = $_POST['user_shows'];
-            $user_podcast_terms = $_POST['user_podcasts'];
+            $user_podcast_terms = isset($_POST['user_podcasts']) ? $_POST['user_podcasts'] : array();
 
             $show_terms = array_unique(array_map('intval', $user_show_terms));
             $podcast_terms = array_unique(array_map('intval', $user_podcast_terms));
