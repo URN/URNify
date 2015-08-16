@@ -83,6 +83,11 @@ class URNify {
         // Each option should have a name as well a 'nice' name for presentation
         $this->custom_show_options[] = array(
             'type' => 'text',
+            'slug' => 'name_prelude',
+            'name' => 'Name Prelude'
+        );
+        $this->custom_show_options[] = array(
+            'type' => 'text',
             'slug' => 'fb_link',
             'name' => 'Facebook Link'
         );
