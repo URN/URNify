@@ -108,6 +108,16 @@ class URNify {
             'name' => 'Hidden',
             'desc' => 'Hide this podcast from view?'
         );
+        $this->custom_show_options[] = array(
+            'type' => 'show_slots',
+            'slug' => 'slot',
+            'name' => 'Time Slots',
+            'desc' => 'When is this show on air?',
+            'label1' => 'Day',
+            'label2' => 'From',
+            'label3' => 'To',
+            'add_new_text' => 'Add slot'
+        );
 
         // Add all custom show options to the 'add show' page
         add_action('shows_add_form_fields', function($term) {
@@ -124,6 +134,31 @@ class URNify {
                               <input name="' . $option['slug'] . '" id="' . $option['slug'] . '" value="true" type="checkbox">
                               <p>' . $option['desc'] . '</p>
                           </div>';
+                }
+                else if ($option['type'] === 'show_slots') {
+                    echo '<div class="show_slots form-field term-' . $option['slug'] .'-wrap">
+                              <h4>Time Slots</h4>
+                              <table>
+                                  <thead>
+                                      <tr>
+                                          <td></td>
+                                          <td><label for="' . $option['slug'] . '-' . $option['label1'] . '">' . $option['label1'] . '</label></td>
+                                          <td><label for="' . $option['slug'] . '-' . $option['label2'] . '">' . $option['label2'] . '</label></td>
+                                          <td><label for="' . $option['slug'] . '-' . $option['label3'] . '">' . $option['label2'] . '</label></td>
+                                          <td></td>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                  </tbody>
+                              </table>
+                          </div>';
+
+                    wp_enqueue_script('jquery_datepair', plugins_url('js/jquery.datepair.min.js', __FILE__ ), array('jquery'), null, true);
+                    wp_enqueue_script('jquery_timepicker', plugins_url('js/jquery.timepicker.min.js', __FILE__ ), array('jquery', 'jquery_datepair'), null, true);
+                    wp_enqueue_script('show_slots', plugins_url('js/show_slots.js', __FILE__ ), array('jquery', 'jquery_timepicker'), null, true);
+
+                    wp_enqueue_style('jquery_timepicker', plugins_url('css/jquery.timepicker.css', __FILE__ ));
+                    wp_enqueue_style('show_slots', plugins_url('css/show_slots.css', __FILE__ ));
                 }
             }
         });
@@ -149,6 +184,37 @@ class URNify {
                               <p class="description" style="display:inline-block;">' . $option['desc'] . '</p></td>
                           </tr>';
                 }
+                else if ($option['type'] === 'show_slots') {
+                    $json = json_encode($value);
+                    echo '<script>var jsonSlots = ' . $json . ';</script>';
+
+                    echo '<tr class="show_slots form-field term-' . $option['slug'] .'-wrap">
+                              <th scope="row"><label for="' . $option['slug'] .'">' . $option['name'] .'</label></th>
+                              <td>
+                                  <table>
+                                      <thead>
+                                          <tr>
+                                              <td></td>
+                                              <td><label for="' . $option['slug'] . '-' . $option['label1'] . '">' . $option['label1'] . '</label></td>
+                                              <td><label for="' . $option['slug'] . '-' . $option['label2'] . '">' . $option['label2'] . '</label></td>
+                                              <td><label for="' . $option['slug'] . '-' . $option['label3'] . '">' . $option['label2'] . '</label></td>
+                                              <td></td>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                      </tbody>
+                                  </table>
+                                  <p class="description" style="display:inline-block;">' . $option['desc'] . '</p>
+                              </td>
+                          </tr>';
+
+                    wp_enqueue_script('jquery_datepair', plugins_url('js/jquery.datepair.min.js', __FILE__ ), array('jquery'), null, true);
+                    wp_enqueue_script('jquery_timepicker', plugins_url('js/jquery.timepicker.min.js', __FILE__ ), array('jquery', 'jquery_datepair'), null, true);
+                    wp_enqueue_script('show_slots', plugins_url('js/show_slots.js', __FILE__ ), array('jquery', 'jquery_timepicker'), null, true);
+
+                    wp_enqueue_style('jquery_timepicker', plugins_url('css/jquery.timepicker.css', __FILE__ ));
+                    wp_enqueue_style('show_slots', plugins_url('css/show_slots.css', __FILE__ ));
+                }
             }
         });
 
@@ -170,6 +236,34 @@ class URNify {
                 else {
                     update_option('show_' . $term_id .'_custom_option_' . $option['slug'], 'false');
                 }
+            }
+            else if ($option['type'] === 'show_slots') {
+                $rawSlots = array($_POST['slot-Day'], $_POST['slot-From'], $_POST['slot-To']);
+
+                $biggestArraySize = 0;
+                foreach ($rawSlots as $array) {
+                    if (count($array) > $biggestArraySize) {
+                        $biggestArraySize = count($array);
+                    }
+                }
+
+                $slots = array();
+
+                for ($i = 0; $i < $biggestArraySize; $i++) {
+                    if (!isset($_POST["slot-Day"][$i]) || !isset($_POST["slot-From"][$i]) || !isset($_POST["slot-To"][$i])) {
+                        continue;
+                    }
+
+                    $day = trim($_POST["slot-Day"][$i]);
+                    $from = trim($_POST["slot-From"][$i]);
+                    $to = trim($_POST["slot-To"][$i]);
+
+                    if ($day != "" && $from != "" && $to != "") {
+                        $slots[] = array("day" => $day, "from" => $from, "to" => $to);
+                    }
+                }
+
+                update_option('show_' . $term_id .'_custom_option_' . $option['slug'], $slots);
             }
         }
     }

@@ -1,0 +1,28 @@
+#col-left,
+#col-right {
+    width: 50%;
+}
+
+.show_slots input[type="text"] {
+    width: 80px;
+}
+
+.show_slots button.add-new {
+    visibility: hidden;
+}
+
+.show_slots button.remove {
+    visibility: visible;
+}
+
+.show_slots tr:last-child button.add-new {
+    visibility: visible;
+}
+
+.show_slots tr:only-child button.remove {
+    visibility: hidden;
+}
+
+.show_slots td {
+    padding: 5px;
+}
