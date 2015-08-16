@@ -149,7 +149,7 @@ class URNify {
                                           <td></td>
                                           <td><label for="' . $option['slug'] . '-' . $option['label1'] . '">' . $option['label1'] . '</label></td>
                                           <td><label for="' . $option['slug'] . '-' . $option['label2'] . '">' . $option['label2'] . '</label></td>
-                                          <td><label for="' . $option['slug'] . '-' . $option['label3'] . '">' . $option['label2'] . '</label></td>
+                                          <td><label for="' . $option['slug'] . '-' . $option['label3'] . '">' . $option['label3'] . '</label></td>
                                           <td></td>
                                       </tr>
                                   </thead>
@@ -202,7 +202,7 @@ class URNify {
                                               <td></td>
                                               <td><label for="' . $option['slug'] . '-' . $option['label1'] . '">' . $option['label1'] . '</label></td>
                                               <td><label for="' . $option['slug'] . '-' . $option['label2'] . '">' . $option['label2'] . '</label></td>
-                                              <td><label for="' . $option['slug'] . '-' . $option['label3'] . '">' . $option['label2'] . '</label></td>
+                                              <td><label for="' . $option['slug'] . '-' . $option['label3'] . '">' . $option['label3'] . '</label></td>
                                               <td></td>
                                           </tr>
                                       </thead>
