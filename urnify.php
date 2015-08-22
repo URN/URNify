@@ -17,8 +17,8 @@ if (!defined('WPINC')) {
     die;
 }
 
-require 'api.php';
-require 'endpoint.php';
+require 'API.php';
+require 'Endpoint.php';
 
 class URNify {
     public $custom_show_options = array();
