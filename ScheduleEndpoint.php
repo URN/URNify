@@ -1,6 +1,17 @@
 <?php
 
 class ScheduleEndpoint extends Endpoint {
+    private static function get_show_length($from, $to) {
+        $from = strtotime($from);
+        $to = strtotime($to);
+
+        if ($from > $to) {
+            $to = strtotime('+1 day', $to);
+        }
+
+        return round(abs($to - $from) / 60,2) . " minutes";
+    }
+
     private static function isLive($day, $from, $to) {
         $current_day = date('l');
 
@@ -90,6 +101,7 @@ class ScheduleEndpoint extends Endpoint {
 
             $host_ids = get_objects_in_term($show->term_id, array('shows'));
             $show_info['hosts'] = self::get_user_info_from_user_ids($host_ids);
+
             foreach ($options['slot'] as $key => $slot) {
                 $day = $slot['day'];
                 $from = $slot['from'];
@@ -97,6 +109,7 @@ class ScheduleEndpoint extends Endpoint {
 
                 $show_info['from'] = $from;
                 $show_info['to'] = $to;
+                $show_info['length'] = self::get_show_length($from, $to);
 
                 $show_info['live'] = self::isLive($day, $from, $to) ? true : false;
                 $schedule[strtolower($day)][] = $show_info;
