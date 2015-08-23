@@ -26,7 +26,7 @@ class API {
                     $wp_query->is_archive = true;
                     $wp_query->is_category = true;
 
-                    if ($wp_query->query_vars['api'] === $endpoint->getName()) {
+                    if ($wp_query->query_vars['api'] === $endpoint->get_name()) {
                         header('Content-Type: application/json');
                         die(json_encode($endpoint->get_output()));
                     }
