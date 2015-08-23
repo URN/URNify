@@ -3,22 +3,21 @@
 class Endpoint {
     private $urlRegex;
     private $name;
-    public $output = array();
 
     public function __construct($urlRegex, $name) {
         $this->urlRegex = $urlRegex;
         $this->name = $name;
     }
 
-    public function getUrlRegex() {
+    public function get_url_regex() {
         return $this->urlRegex;
     }
 
-    public function getName() {
+    public function get_name() {
         return $this->name;
     }
 
-    public function getOutput() {
-        return $this->output->__invoke();
+    public function get_output() {
+        return array();
     }
 }

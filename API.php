@@ -3,11 +3,11 @@
 class API {
     private static $endpoints = array();
 
-    public static function addEndpoint($endpoint) {
+    public static function add_endpoint($endpoint) {
         self::$endpoints[] = $endpoint;
     }
 
-    public static function constructEndpoints() {
+    public static function construct_endpoints() {
         add_filter('query_vars', function ($query_vars) {
             $query_vars[] = 'api';
             return $query_vars;
@@ -15,7 +15,7 @@ class API {
 
         foreach (self::$endpoints as $key => $endpoint) {
             add_action('init', function () use ($endpoint) {
-                add_rewrite_rule('api' . $endpoint->getUrlRegex(), 'index.php?api=' . $endpoint->getName(), 'top');
+                add_rewrite_rule('api' . $endpoint->get_url_regex(), 'index.php?api=' . $endpoint->get_name(), 'top');
             });
 
             add_filter('template_include', function ($template) use ($endpoint) {
@@ -28,7 +28,7 @@ class API {
 
                     if ($wp_query->query_vars['api'] === $endpoint->getName()) {
                         header('Content-Type: application/json');
-                        die(json_encode($endpoint->getOutput()));                
+                        die(json_encode($endpoint->get_output()));
                     }
                 } else {
                     return $template;
