@@ -22,6 +22,28 @@ class ScheduleEndpoint extends Endpoint {
         }
     }
 
+    private static function get_user_info_from_user_ids($user_ids) {
+        $users = array();
+
+        foreach ($user_ids as $id) {
+            $user = array();
+
+            $firstname = get_user_meta($id, 'first_name', true);
+            $lastname = get_user_meta($id, 'last_name', true);
+            if ($firstname !== '' && $lastname !== '') {
+                $user['name'] = $firstname . ' ' . $lastname;
+            }
+            else {
+                $user['name'] = get_user_meta($id, 'nickname', true);
+            }
+
+            $user['link'] = '#';
+            $users[] = $user;
+        }
+
+        return $users;
+    }
+
     public function get_output() {
         $all_options = wp_load_alloptions();
         $show_options = array();
@@ -66,6 +88,8 @@ class ScheduleEndpoint extends Endpoint {
             $show_info['slug'] = $show->slug;
             $show_info['description'] = $show->description;
 
+            $host_ids = get_objects_in_term($show->term_id, array('shows'));
+            $show_info['hosts'] = self::get_user_info_from_user_ids($host_ids);
             foreach ($options['slot'] as $key => $slot) {
                 $day = $slot['day'];
                 $from = $slot['from'];
