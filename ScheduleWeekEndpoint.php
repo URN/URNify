@@ -1,6 +1,6 @@
 <?php
 
-class ScheduleEndpoint extends Endpoint {
+class ScheduleWeekEndpoint extends Endpoint {
     private static function get_show_length($from, $to) {
         $from = strtotime($from);
         $to = strtotime($to);

@@ -25,7 +25,8 @@ require 'Committee.php';
 
 require 'API.php';
 require 'Endpoint.php';
-require 'ScheduleEndpoint.php';
+require 'ScheduleWeekEndpoint.php';
+require 'ScheduleDayEndpoint.php';
 
 class URNify {
     public static function init() {
@@ -61,7 +62,8 @@ class URNify {
     }
 
     public static function create_api() {
-        API::add_endpoint(new ScheduleEndpoint('/schedule/week$', 'schedule_week'));
+        API::add_endpoint(new ScheduleWeekEndpoint('/schedule/week$', 'schedule_week'));
+        API::add_endpoint(new ScheduleDayEndpoint('/schedule/day/(monday|tuesday|wednesday|thursday|friday)$', 'schedule_$matches[1]'));
         API::construct_endpoints();
     }
 }
