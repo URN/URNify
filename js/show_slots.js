@@ -59,7 +59,7 @@
         });
     });
 
-    if (typeof window.jsonSlots !== 'undefined') {
+    if (typeof window.jsonSlots !== 'undefined' && window.jsonSlots.length > 0) {
         $.each(window.jsonSlots, function (i, slot) {
             var $row = createRow();
             $row.find("td:nth-child(2) select").attr("value", slot.day);
