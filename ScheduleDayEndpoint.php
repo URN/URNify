@@ -46,8 +46,8 @@ class ScheduleDayEndpoint extends ScheduleEndpoint {
 
             foreach ($options['slot'] as $key => $slot) {
                 $day = $slot['day'];
-                $from = $slot['from'];
-                $to = $slot['to'];
+                $from = date("H:i", strtotime($slot['from']));
+                $to = date("H:i", strtotime($slot['to']));
 
                 $show_info['from'] = $from;
                 $show_info['to'] = $to;
