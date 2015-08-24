@@ -9,7 +9,7 @@ class ScheduleWeekEndpoint extends Endpoint {
             $to = strtotime('+1 day', $to);
         }
 
-        return round(abs($to - $from) / 60,2) . " minutes";
+        return round(abs($to - $from) / 60,2);
     }
 
     private static function isLive($day, $from, $to) {
