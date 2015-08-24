@@ -17,7 +17,7 @@ class Endpoint {
         return $this->name;
     }
 
-    public function get_output() {
+    public function get_output($match) {
         return array();
     }
 }

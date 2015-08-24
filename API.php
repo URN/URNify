@@ -26,9 +26,11 @@ class API {
                     $wp_query->is_archive = true;
                     $wp_query->is_category = true;
 
-                    if ($wp_query->query_vars['api'] === $endpoint->get_name()) {
+                    $base_name = str_replace('$matches[1]', '', $endpoint->get_name());
+                    if (strpos($wp_query->query_vars['api'], $base_name) !== false) {
+                        $match = str_replace($base_name, '', $wp_query->query_vars['api']);
                         header('Content-Type: application/json');
-                        die(json_encode($endpoint->get_output()));
+                        die(json_encode($endpoint->get_output($match)));
                     }
                 } else {
                     return $template;
