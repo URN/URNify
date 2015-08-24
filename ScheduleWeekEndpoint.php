@@ -11,14 +11,14 @@ class ScheduleWeekEndpoint extends ScheduleEndpoint {
         }
 
         $shows = get_terms('shows', array('hide_empty' => 0));
-        $schedule = array();
-        $schedule['monday'] = array();
-        $schedule['tuesday'] = array();
-        $schedule['wednesday'] = array();
-        $schedule['thursday'] = array();
-        $schedule['friday'] = array();
-        $schedule['saturday'] = array();
-        $schedule['sunday'] = array();
+        $response = array();
+        $response['monday'] = array();
+        $response['tuesday'] = array();
+        $response['wednesday'] = array();
+        $response['thursday'] = array();
+        $response['friday'] = array();
+        $response['saturday'] = array();
+        $response['sunday'] = array();
 
         foreach ($shows as $key => $show) {
             $options = array();
@@ -58,10 +58,18 @@ class ScheduleWeekEndpoint extends ScheduleEndpoint {
                 $show_info['length'] = self::get_show_length($from, $to);
 
                 $show_info['live'] = self::isLive($day, $from, $to) ? true : false;
-                $schedule[strtolower($day)][] = $show_info;
+                $response[strtolower($day)][] = $show_info;
             }
         }
 
-        return $schedule;
+        $response['monday'] = self::order_show_slots($response['monday']);
+        $response['tuesday'] = self::order_show_slots($response['tuesday']);
+        $response['wednesday'] = self::order_show_slots($response['wednesday']);
+        $response['thursday'] = self::order_show_slots($response['thursday']);
+        $response['friday'] = self::order_show_slots($response['friday']);
+        $response['saturday'] = self::order_show_slots($response['saturday']);
+        $response['sunday'] = self::order_show_slots($response['sunday']);
+
+        return $response;
     }
 }

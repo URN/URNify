@@ -54,4 +54,14 @@ class ScheduleEndpoint extends Endpoint {
 
         return $users;
     }
+
+    protected static function order_show_slots($shows) {
+        $startTimes = array();
+        foreach ($shows as $key => $show) {
+            $startTimes[$key] = $show['from'];
+        }
+        array_multisort($startTimes, SORT_ASC, $shows);
+
+        return $shows;
+    }
 }

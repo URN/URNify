@@ -61,6 +61,7 @@ class ScheduleDayEndpoint extends ScheduleEndpoint {
             }
         }
 
+        $response['shows'] = self::order_show_slots($response['shows']);
         return $response;
     }
 }
