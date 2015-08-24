@@ -99,7 +99,8 @@ class CustomTaxonomy {
             $slug = $option->get_slug();
 
             if (isset($_POST[$slug])) {
-                $option->save($this->get_slug(), $term_id, $_POST);
+                error_log($_POST);
+                $option->save($this->get_slug(), $term_id, array_map('stripslashes_deep', $_POST));
             }
             else {
                 $option->save($this->get_slug(), $term_id, null);
@@ -159,9 +160,9 @@ class CustomTaxonomy {
                 $is_member_of_taxonomy = in_array($term->term_id, $users_term_ids); ?>
                 <input type="checkbox"
                        id="user-<?php echo $taxonomy; ?>-<?php echo $term_id ?>"
-                       <?php if($is_member_of_taxonomy) echo 'checked=checked';?> 
+                       <?php if($is_member_of_taxonomy) echo 'checked=checked';?>
                        name="user_<?php echo $taxonomy; ?>[]"
-                       value="<?php echo $term_id;?>"> 
+                       value="<?php echo $term_id;?>">
                 <?php
                 echo "<label for=\"user-${taxonomy}-${term_id}\">{$term->name}</label>";
                 echo '<br>';
@@ -196,7 +197,7 @@ class CustomTaxonomy {
             $show_terms = array_unique(array_map('intval', $user_show_terms));
 
             wp_set_object_terms($user_id, $show_terms, 'shows', false);
-         
+
             //make sure you clear the term cache
             clean_object_term_cache($user_id, 'shows');
         }
@@ -205,16 +206,16 @@ class CustomTaxonomy {
     // The highlighted 'current item' doesn't stick on Shows like it should
     public function fix_taxonomy_menu_jumping($parent_file = '') {
         global $pagenow;
-     
+
         if (!empty($_GET['taxonomy']) && $pagenow == 'edit-tags.php') {
             if ($_GET['taxonomy'] == 'shows') {
                 $parent_file = 'edit-tags.php?taxonomy=shows';
             }
             else if ($_GET['taxonomy'] == 'podcasts') {
-                $parent_file = 'edit-tags.php?taxonomy=podcasts';   
+                $parent_file = 'edit-tags.php?taxonomy=podcasts';
             }
         }
-     
+
         return $parent_file;
     }
 }

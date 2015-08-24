@@ -47,7 +47,7 @@ class CustomOptionCheckbox {
 
     public function save($taxonomy_name, $term_id, $post_data) {
         if ($post_data !== null) {
-            update_option($taxonomy_name . '_' . $term_id .'_custom_option_' . $this->get_slug(), $post_data[$this->get_slug()]);
+            update_option($taxonomy_name . '_' . $term_id .'_custom_option_' . $this->get_slug(), sanitize_text_field($post_data[$this->get_slug()]));
         }
         else {
             update_option($taxonomy_name . '_' . $term_id .'_custom_option_' . $this->get_slug(), 'false');
