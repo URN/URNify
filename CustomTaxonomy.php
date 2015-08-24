@@ -99,7 +99,6 @@ class CustomTaxonomy {
             $slug = $option->get_slug();
 
             if (isset($_POST[$slug])) {
-                error_log($_POST);
                 $option->save($this->get_slug(), $term_id, array_map('stripslashes_deep', $_POST));
             }
             else {
