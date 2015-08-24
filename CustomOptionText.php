@@ -38,11 +38,11 @@ class CustomOptionText {
     }
 
     public function save($taxonomy_name, $term_id, $post_data) {
-        if ($post_data !== null) {
+        if ($post_data[$this->get_slug()] !== null) {
             update_option($taxonomy_name . '_' . $term_id .'_custom_option_' . $this->get_slug(), sanitize_text_field($post_data[$this->get_slug()]));
         }
         else {
-            update_option($taxonomy_name . '_' . $term_id .'_custom_option_' . $this->get_slug(), 'false');
+            update_option($taxonomy_name . '_' . $term_id .'_custom_option_' . $this->get_slug(), '');
         }
     }
 }
