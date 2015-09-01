@@ -51,7 +51,7 @@ class ScheduleDayEndpoint extends ScheduleEndpoint {
 
                 $show_info['from'] = $from;
                 $show_info['to'] = $to;
-                $show_info['length'] = self::get_show_length($from, $to);
+                $show_info['duration'] = self::get_show_length($from, $to);
 
                 $show_info['live'] = self::isLive($day, $from, $to) ? true : false;
 
