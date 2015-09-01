@@ -30,6 +30,8 @@ class API {
                     if (strpos($wp_query->query_vars['api'], $base_name) !== false) {
                         $match = str_replace($base_name, '', $wp_query->query_vars['api']);
                         header('Content-Type: application/json');
+                        header('Access-Control-Request-Headers: X-Requested-With, accept, content-type');
+                        header('Access-Control-Allow-Methods: GET, POST');
                         die(json_encode($endpoint->get_output($match)));
                     }
                 } else {
