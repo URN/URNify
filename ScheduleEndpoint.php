@@ -13,6 +13,8 @@ class ScheduleEndpoint extends Endpoint {
     }
 
     protected static function isLive($day, $from, $to) {
+        date_default_timezone_set("Europe/London");
+
         $current_day = date('l');
 
         if ($day !== $current_day) {
