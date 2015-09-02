@@ -44,6 +44,7 @@ class ScheduleWeekEndpoint extends ScheduleEndpoint {
             $show_info['name'] = $show->name;
             $show_info['slug'] = $show->slug;
             $show_info['description'] = $show->description;
+            $show_info['category'] = $options['show_category'];
 
             $host_ids = get_objects_in_term($show->term_id, array('shows'));
             $show_info['hosts'] = self::get_user_info_from_user_ids($host_ids);
