@@ -28,6 +28,7 @@ require 'Endpoint.php';
 require 'ScheduleEndpoint.php';
 require 'ScheduleWeekEndpoint.php';
 require 'ScheduleDayEndpoint.php';
+require 'CurrentSongEndpoint.php';
 
 class URNify {
     public static function init() {
@@ -65,6 +66,7 @@ class URNify {
     public static function create_api() {
         API::add_endpoint(new ScheduleWeekEndpoint('/schedule/week$', 'schedule_week'));
         API::add_endpoint(new ScheduleDayEndpoint('/schedule/day/(monday|tuesday|wednesday|thursday|friday|saturday|sunday)$', 'schedule_day_$matches[1]'));
+        API::add_endpoint(new CurrentSongEndpoint('/current_song$', 'current_song'));
         API::construct_endpoints();
     }
 }
