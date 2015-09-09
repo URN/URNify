@@ -20,7 +20,7 @@ class CurrentSongEndpoint extends Endpoint {
             $postedKey = urldecode($_POST['key']);
 
             if (isset($_POST['key']) && isset($_POST['update']) && $postedKey === $updateKey) {
-                $song = json_decode(file_get_contents('http://urn1350.net/current-song.json'));
+                $song = json_decode(file_get_contents('http://www.urn1350.net/current-song.json'));
                 update_option('current_song_title', $song->title);
                 update_option('current_song_artist', $song->artist);
                 update_option('current_song_image_url', $song->image);
