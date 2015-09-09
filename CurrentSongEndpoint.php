@@ -12,7 +12,7 @@ class CurrentSongEndpoint extends Endpoint {
             $response['image_url'] = get_option('current_song_image_url');
             $response['large_image_url'] = get_option('current_song_large_image_url');
             $response['start_time'] = get_option('current_song_start_time');
-            $response['length'] = get_option('current_song_length');
+            $response['duration'] = get_option('current_song_duration');
             return $response;
         }
 
@@ -26,7 +26,7 @@ class CurrentSongEndpoint extends Endpoint {
                 update_option('current_song_image_url', $song->image);
                 update_option('current_song_large_image_url', $song->image_large);
                 update_option('current_song_start_time', $song->start_time);
-                update_option('current_song_length', $song->length);
+                update_option('current_song_duration', $song->length);
 
                 return array("status" => "success", "message" => "Current song successfully updated");
             }
