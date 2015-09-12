@@ -21,12 +21,12 @@ class CurrentSongEndpoint extends Endpoint {
 
             if (isset($_POST['key']) && isset($_POST['update']) && $postedKey === $updateKey) {
                 $song = json_decode(file_get_contents('http://www.urn1350.net/current-song.json'));
-                update_option('current_song_title', $song->title);
-                update_option('current_song_artist', $song->artist);
-                update_option('current_song_image_url', $song->image);
-                update_option('current_song_large_image_url', $song->image_large);
-                update_option('current_song_start_time', $song->start_time);
-                update_option('current_song_duration', $song->length);
+                update_option('current_song_title', stripslashes($song->title));
+                update_option('current_song_artist', stripslashes($song->artist));
+                update_option('current_song_image_url', stripslashes($song->image));
+                update_option('current_song_large_image_url', stripslashes($song->image_large));
+                update_option('current_song_start_time', stripslashes($song->start_time));
+                update_option('current_song_duration', stripslashes($song->length));
 
                 return array("status" => "success", "message" => "Current song successfully updated");
             }
