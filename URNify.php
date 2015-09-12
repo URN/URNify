@@ -38,6 +38,13 @@ class URNify {
         self::create_shows_taxonomy();
         self::create_podcasts_taxonomy();
         self::create_api();
+
+        // Rename the author base slug to 'member'
+        // /author/<username> -> /member/<username>
+        add_action('init', function () {
+            global $wp_rewrite;
+            $wp_rewrite->author_base = 'member';
+        });
     }
 
     public static function create_shows_taxonomy() {
