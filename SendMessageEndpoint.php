@@ -7,7 +7,7 @@ class SendMessageEndpoint extends Endpoint {
             $url = 'http://int.urn1350.net:8080/web/submit_message.php?type=web&message=' . urlencode($_POST['message']);
             $url .= '&sender=' . urlencode($sender_ip);
             $data = file_get_contents($url);
-            var_dump($data);
+
             if ($data === 'OK') {
                 return array("status" => "success", "message" => "Message sent successfully");
             }
