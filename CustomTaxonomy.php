@@ -168,7 +168,7 @@ class CustomTaxonomy {
                 echo '<br>';
             }
             if (count($all_terms) == 0) {
-                echo '<i>No shows have been created</i>';
+                echo '<i>No ' . $this->get_plural_slug() . ' have been created</i>';
             }
         }
         else {
