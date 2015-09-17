@@ -152,7 +152,8 @@ class CustomTaxonomy {
         $all_terms = get_terms($taxonomy, array('hide_empty'=>false));
         echo "<h3>" . ucfirst($taxonomy) . "</h3>";
 
-        if (current_user_can('editor') || current_user_can('administrator')) {
+        if (current_user_can('editor') || current_user_can('administrator')
+            || current_user_can('committee')) {
             // For every term (show/podcast), print a label and checkbox of user membership
             foreach ($all_terms as $term) {
                 $term_id = $term->term_id;
@@ -190,7 +191,8 @@ class CustomTaxonomy {
 
     // Save POSTED memberships of shows/podcasts to the database
     public function save_memberships($user_id) {
-        if ( current_user_can('editor') || current_user_can('administrator') ) {
+        if ( current_user_can('editor') || current_user_can('administrator')
+            || current_user_can('committee')) {
             $user_show_terms = isset($_POST['user_shows']) ? $_POST['user_shows'] : array();
 
             $show_terms = array_unique(array_map('intval', $user_show_terms));
