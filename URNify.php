@@ -38,12 +38,38 @@ class URNify {
         self::create_shows_taxonomy();
         self::create_podcasts_taxonomy();
         self::create_api();
+        self::hide_default_roles();
 
         // Rename the author base slug to 'member'
         // /author/<username> -> /member/<username>
         add_action('init', function () {
             global $wp_rewrite;
             $wp_rewrite->author_base = 'member';
+        });
+
+
+    }
+
+    public static function hide_default_roles() {
+        add_filter('editable_roles', function ($roles) {
+            //Hide Defualt Roles
+            if (isset($roles['author'])) {
+                unset($roles['author']);
+            }
+
+            if (isset($roles['editor'])) {
+                unset($roles['editor']);
+            }
+
+            if (isset($roles['subscriber'])) {
+                unset($roles['subscriber']);
+            }
+
+            if (isset($roles['contributor'])) {
+                unset($roles['contributor']);
+            }
+
+            return $roles;
         });
     }
 
