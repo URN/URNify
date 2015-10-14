@@ -2,7 +2,7 @@
 /*
 Plugin Name: URNify
 Plugin URI: https://github.com/URN/URNify
-Description: This plugin pimps out WordPress to support radio-like features, including support for Shows and Podcasts that users can be added to and then make posts on. Also adds an option to the edit user page to give users committee membership that can be seen on their public user page. A basic JSON API is also implemented.
+Description: This plugin pimps out WordPress to support radio-like features, including support for Shows that users can be added to and then make posts on. Also adds an option to the edit user page to give users committee membership that can be seen on their public user page. A basic JSON API is also implemented.
 Version: 0.2
 Author: James Turner
 Author URI: https://github.com/jamesturner
@@ -36,7 +36,6 @@ class URNify {
         new Committee();
 
         self::create_shows_taxonomy();
-        self::create_podcasts_taxonomy();
         self::create_api();
         self::hide_default_roles();
 
@@ -46,8 +45,6 @@ class URNify {
             global $wp_rewrite;
             $wp_rewrite->author_base = 'member';
         });
-
-
     }
 
     public static function hide_default_roles() {
@@ -84,17 +81,6 @@ class URNify {
         $options[] = new CustomOptionTimeSlots('Time Slots', 'slot', 'When is this show on air?');
 
         $shows_taxonomy = new CustomTaxonomy('Show', 'Shows', 'dashicons-groups', 21, $options);
-    }
-
-    public static function create_podcasts_taxonomy() {
-        $options = array();
-        $options[] = new CustomOptionText('Facebook Link', 'fb_link');
-        $options[] = new CustomOptionText('Twitter Link', 'tw_link');
-        $options[] = new CustomOptionText('iTunes Link', 'itunes_link');
-        $options[] = new CustomOptionCheckbox('Ended', 'ended', 'Has the podcast ended?');
-        $options[] = new CustomOptionCheckbox('Hidden', 'hidden', 'Should the podcast be hidden?');
-
-        $podcasts_taxonomy = new CustomTaxonomy('Podcast', 'Podcasts', 'dashicons-microphone', 22, $options);
     }
 
     public static function create_api() {
