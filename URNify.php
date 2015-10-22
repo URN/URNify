@@ -76,6 +76,7 @@ class URNify {
         $options[] = new CustomOptionText('Facebook Link', 'fb_link');
         $options[] = new CustomOptionText('Twitter Link', 'tw_link');
         $options[] = new CustomOptionText('Show Category', 'show_category');
+        $options[] = new CustomOptionText('Image URL', 'image');
         $options[] = new CustomOptionCheckbox('Ended', 'ended', 'Has the show ended?');
         $options[] = new CustomOptionCheckbox('Hidden', 'hidden', 'Should the show be hidden?');
         $options[] = new CustomOptionTimeSlots('Time Slots', 'slot', 'When is this show on air?');
