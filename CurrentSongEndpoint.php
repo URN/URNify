@@ -1,7 +1,7 @@
 <?php
 
 class CurrentSongEndpoint extends Endpoint {
-    private function checkMultipleIssetPost($parameters) {
+    private static function checkMultipleIssetPost($parameters) {
         $valid = true;
         foreach ($parameters as $parameter) {
             if (!isset($_POST[$parameter])) {
@@ -29,7 +29,6 @@ class CurrentSongEndpoint extends Endpoint {
 
         if ($method === 'POST') {
             $postedKey = urldecode($_POST['key']);
-
             if (isset($_POST['key']) && $postedKey === $updateKey) {
                 if (isset($_POST['update'])) {
                     $song = json_decode(file_get_contents('http://www.urn1350.net/current-song.json'));
@@ -43,7 +42,7 @@ class CurrentSongEndpoint extends Endpoint {
                     return array("status" => "success", "message" => "Current song successfully updated");
                 }
 
-                if (checkMultipleIssetPost(array('title', 'artist', 'start_time', 'length', 'image', 'image_large'))) {
+                if (self::checkMultipleIssetPost(array('title', 'artist', 'start_time', 'length', 'image', 'image_large'))) {
                     update_option('current_song_title', stripslashes($_POST['title']));
                     update_option('current_song_artist', stripslashes($_POST['artist']));
                     update_option('current_song_image_url', stripslashes($_POST['image']));
