@@ -43,12 +43,12 @@ class CurrentSongEndpoint extends Endpoint {
                 }
 
                 if (self::checkMultipleIssetPost(array('title', 'artist', 'start_time', 'length', 'image', 'image_large'))) {
-                    update_option('current_song_title', stripslashes($_POST['title']));
-                    update_option('current_song_artist', stripslashes($_POST['artist']));
-                    update_option('current_song_image_url', stripslashes($_POST['image']));
-                    update_option('current_song_large_image_url', stripslashes($_POST['image_large']));
-                    update_option('current_song_start_time', stripslashes($_POST['start_time']));
-                    update_option('current_song_duration', stripslashes($_POST['length']));
+                    update_option('current_song_title', urldecode(stripslashes($_POST['title'])));
+                    update_option('current_song_artist', urldecode(stripslashes($_POST['artist'])));
+                    update_option('current_song_image_url', urldecode(stripslashes($_POST['image'])));
+                    update_option('current_song_large_image_url', urldecode(stripslashes($_POST['image_large'])));
+                    update_option('current_song_start_time', urldecode(stripslashes($_POST['start_time'])));
+                    update_option('current_song_duration', urldecode(stripslashes($_POST['length'])));
 
                     return array("status" => "success", "message" => "Current song successfully updated");
                 }
