@@ -32,7 +32,21 @@ class API {
                         header('Content-Type: application/json');
                         header('Access-Control-Request-Headers: X-Requested-With, accept, content-type');
                         header('Access-Control-Allow-Methods: GET, POST');
-                        die(json_encode($endpoint->get_output($match)));
+
+                        $filename = dirname(__FILE__) . '/cache/' . $wp_query->query_vars['api'] . '.json';
+
+                        // How long the cache for endpoints lasts for in seconds
+                        $cache_ttl = 30;
+
+                        if (file_exists($filename) && time() - filemtime($filename) < $cache_ttl) {
+                            $output = file_get_contents($filename);
+                        }
+                        else {
+                            $output = json_encode($endpoint->get_output($match));
+                            file_put_contents($filename, $output);
+                        }
+
+                        die($output);
                     }
                 } else {
                     return $template;
