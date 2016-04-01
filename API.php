@@ -33,6 +33,11 @@ class API {
                         header('Access-Control-Request-Headers: X-Requested-With, accept, content-type');
                         header('Access-Control-Allow-Methods: GET, POST');
 
+                        // If it's a POST request, don't cache anything
+                        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                            die(json_encode($endpoint->get_output($match)));
+                        }
+
                         $filename = dirname(__FILE__) . '/cache/' . $wp_query->query_vars['api'] . '.json';
 
                         // How long the cache for endpoints lasts for in seconds
