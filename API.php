@@ -41,7 +41,7 @@ class API {
                         $filename = dirname(__FILE__) . '/cache/' . $wp_query->query_vars['api'] . '.json';
 
                         // How long the cache for endpoints lasts for in seconds
-                        $cache_ttl = 30;
+                        $cache_ttl = 15;
 
                         if (file_exists($filename) && time() - filemtime($filename) < $cache_ttl) {
                             $output = file_get_contents($filename);
