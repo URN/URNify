@@ -1,9 +1,9 @@
 <?php
 
-class VarsityScoreboardEndpoint extends Endpoint {
+class VarsityMatchesEndpoint extends Endpoint {
     public function get_output($api_name_info) {
         $method = $_SERVER['REQUEST_METHOD'];
-        $sheet = "https://docs.google.com/spreadsheets/d/1mbUHySFcc3oPAnnuGhkcOwIw-J5Iz19gSitp3G0d9ko/pub?output=csv";
+        $sheet = "https://docs.google.com/spreadsheets/d/1mbUHySFcc3oPAnnuGhkcOwIw-J5Iz19gSitp3G0d9ko/pub?gid=0&output=csv";
 
         if ($method === 'GET') {
             $ch = curl_init();
