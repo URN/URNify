@@ -25,13 +25,13 @@ require 'Committee.php';
 
 require 'API.php';
 require 'Endpoint.php';
-require 'ScheduleEndpoint.php';
-require 'ScheduleWeekEndpoint.php';
-require 'ScheduleDayEndpoint.php';
-require 'CurrentSongEndpoint.php';
-require 'SendMessageEndpoint.php';
-require 'VarsityMatchesEndpoint.php';
-require 'VarsityScoresEndpoint.php';
+require 'endpoints/ScheduleEndpoint.php';
+require 'endpoints/ScheduleWeekEndpoint.php';
+require 'endpoints/ScheduleDayEndpoint.php';
+require 'endpoints/CurrentSongEndpoint.php';
+require 'endpoints/SendMessageEndpoint.php';
+require 'endpoints/VarsityMatchesEndpoint.php';
+require 'endpoints/VarsityScoresEndpoint.php';
 
 class URNify {
     public static function init() {
