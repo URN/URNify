@@ -13,7 +13,7 @@ class CurrentSongEndpoint extends Endpoint {
     }
 
     public function get_output($api_name_info) {
-        $updateKey = 'MwaOOmqItO2rTNSH0^SypV%C3$5*J#FV!cfSSGLY2K@%Ube9%b#OIRy';
+        $updateKey = constant('API_UPDATE_KEY');
         $method = $_SERVER['REQUEST_METHOD'];
 
         if ($method === 'GET') {
