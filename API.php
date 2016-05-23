@@ -32,10 +32,6 @@ class API {
                         header('Content-Type: application/json');
                         header('Access-Control-Request-Headers: X-Requested-With, accept, content-type');
                         header('Access-Control-Allow-Methods: GET, POST');
-#
-                        // Disable cache
-                        die(json_encode($endpoint->get_output($match)));
-
 
                         // If it's a POST request, don't cache anything
                         if ($_SERVER['REQUEST_METHOD'] == 'POST') {

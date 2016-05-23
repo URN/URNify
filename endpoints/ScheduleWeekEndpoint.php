@@ -62,7 +62,7 @@ class ScheduleWeekEndpoint extends ScheduleEndpoint {
                 $show_info['duration'] = self::get_show_length($from, $to);
 
                 $show_info['live'] = self::isLive($day, $from, $to) ? true : false;
-                // $response[strtolower($day)][] = $show_info;
+                $response[strtolower($day)][] = $show_info;
             }
         }
 
@@ -162,10 +162,6 @@ class ScheduleWeekEndpoint extends ScheduleEndpoint {
                 }
             }
         }
-
-
-        //run items through func to truncate overlaps
-
 
         return $response;
     }
