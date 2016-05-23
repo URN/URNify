@@ -116,6 +116,14 @@ class ScheduleWeekEndpoint extends ScheduleEndpoint {
                 $slot['live'] = self::isLive($dayName, $from, $to) ? true : false;
                 $slot['override'] = true;
 
+                if (strpos(strtolower($item->title), 'automation') !== false) {
+                    $slot['category'] = 'Automation';
+                }
+
+                if (strpos(strtolower($item->title), 'varsity') !== false) {
+                    $slot['category'] = 'Varsity';
+                }
+
                 $diff = $start->diff($end);
                 $slot['duration'] = ($diff->days * 24 * 60) + ($diff->h * 60) + $diff->i;
 
@@ -134,6 +142,14 @@ class ScheduleWeekEndpoint extends ScheduleEndpoint {
 
                     $slot['live'] = self::isLive($dayName, $from, $to) ? true : false;
                     $slot['override'] = true;
+
+                    if (strpos(strtolower($item->title), 'automation') !== false) {
+                        $slot['category'] = 'Automation';
+                    }
+
+                    if (strpos(strtolower($item->title), 'varsity') !== false) {
+                        $slot['category'] = 'Varsity';
+                    }
 
                     if ($i == 0) {
                         $slot['from'] = $from;
