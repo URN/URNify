@@ -100,6 +100,7 @@ class URNify {
     }
 
     public static function create_schedule_override() {
+        register_activation_hook( __FILE__, 'ScheduleOverride::create_database_table');
         ScheduleOverride::init();
     }
 }

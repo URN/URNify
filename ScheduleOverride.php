@@ -16,8 +16,6 @@ class ScheduleOverride {
             );
         });
 
-        register_activation_hook( __FILE__, 'ScheduleOverride::create_database_table');
-
         add_action('admin_post_add_schedule_override', function () {
             $valid = true;
             foreach (array(
@@ -111,6 +109,7 @@ class ScheduleOverride {
     }
 
     public static function get_page_content() {
+        self::create_database_table();
         $description = 'The schedule override utility is used for creating one-off slots in the schedule. It\'s useful for events such as Varsity where you might want to add a temporary slot in the schedule for a certain day and time to specify a game/fixture. After the event has passed, it will no longer be displayed on the schedule.';
 
         wp_enqueue_script('jquery_datepair', plugins_url('js/jquery.datepair.min.js', __FILE__ ), array('jquery'), null, true);
@@ -249,7 +248,7 @@ class ScheduleOverride {
     public static function create_database_table() {
         global $wpdb;
 
-        $table = $wpdb->prefix . $database_table_name;
+        $table = $wpdb->prefix . self::$database_table_name;
         $charset_collate = $wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE $table (
