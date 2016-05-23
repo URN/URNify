@@ -62,7 +62,7 @@ class ScheduleWeekEndpoint extends ScheduleEndpoint {
                 $show_info['duration'] = self::get_show_length($from, $to);
 
                 $show_info['live'] = self::isLive($day, $from, $to) ? true : false;
-                $response[strtolower($day)][] = $show_info;
+                // $response[strtolower($day)][] = $show_info;
             }
         }
 
@@ -101,8 +101,7 @@ class ScheduleWeekEndpoint extends ScheduleEndpoint {
             // Get the number of days this week that the item will occur on
             $days = $startMidnight->diff($endMidnight)->days + 1;
 
-
-
+            $days = $days > 7 ? 7 : $days;
 
             if ($days == 1) {
                 $dayName = strtolower($start->format('l'));
@@ -163,6 +162,10 @@ class ScheduleWeekEndpoint extends ScheduleEndpoint {
                 }
             }
         }
+
+
+        //run items through func to truncate overlaps
+
 
         return $response;
     }
