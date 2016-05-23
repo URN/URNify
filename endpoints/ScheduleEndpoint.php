@@ -1,6 +1,22 @@
 <?php
 
 class ScheduleEndpoint extends Endpoint {
+    protected static function create_slot() {
+        $slot = array();
+        $slot['name'] = '';
+        $slot['slug'] = '';
+        $slot['description'] = '';
+        $slot['category'] = '';
+        $slot['image'] = '';
+        $slot['hosts'] = array();
+        $slot['from'] = '00:00';
+        $slot['to'] = '24:00';
+        $slot['duration'] = '1440';
+        $slot['live'] = false;
+        $slot['override'] = false;
+        return $slot;
+    }
+
     protected static function get_show_length($from, $to) {
         $from = strtotime($from);
         $to = strtotime($to);
@@ -15,10 +31,15 @@ class ScheduleEndpoint extends Endpoint {
     protected static function isLive($day, $from, $to) {
         date_default_timezone_set("Europe/London");
 
-        $current_day = date('l');
+        $current_day = strtolower(date('l'));
 
-        if ($day !== $current_day) {
+        if (strtolower($day) !== $current_day) {
             return false;
+        }
+
+        // If the slot is all day, it must be live
+        if ($from == '00:00' && $to == '00:00') {
+            return true;
         }
 
         $from = strtotime($from);

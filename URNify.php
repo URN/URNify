@@ -23,6 +23,8 @@ require 'CustomOptionTimeSlots.php';
 
 require 'Committee.php';
 
+require 'ScheduleOverride.php';
+
 require 'API.php';
 require 'Endpoint.php';
 require 'endpoints/ScheduleEndpoint.php';
@@ -40,6 +42,7 @@ class URNify {
         self::create_shows_taxonomy();
         self::create_api();
         self::hide_default_roles();
+        self::create_schedule_override();
 
         // Rename the author base slug to 'member'
         // /author/<username> -> /member/<username>
@@ -94,6 +97,10 @@ class URNify {
         API::add_endpoint(new VarsityMatchesEndpoint('/varsity/matches$', 'varsity_matches'));
         API::add_endpoint(new VarsityScoresEndpoint('/varsity/scores$', 'varsity_scores'));
         API::construct_endpoints();
+    }
+
+    public static function create_schedule_override() {
+        ScheduleOverride::init();
     }
 }
 

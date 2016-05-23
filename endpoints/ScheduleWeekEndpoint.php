@@ -2,6 +2,8 @@
 
 class ScheduleWeekEndpoint extends ScheduleEndpoint {
     public function get_output($match) {
+        date_default_timezone_set("Europe/London");
+
         $all_options = wp_load_alloptions();
         $show_options = array();
         foreach ($all_options as $key => $value) {
@@ -71,6 +73,96 @@ class ScheduleWeekEndpoint extends ScheduleEndpoint {
         $response['friday'] = self::order_show_slots($response['friday']);
         $response['saturday'] = self::order_show_slots($response['saturday']);
         $response['sunday'] = self::order_show_slots($response['sunday']);
+
+        // Load overrides
+        $overrideItems = ScheduleOverride::get_this_weeks_items();
+
+        // Get the datetime of the monday for this week
+        $mondayThisWeek = ScheduleOverride::get_monday_this_week();
+        $sundayThisWeek = ScheduleOverride::get_sunday_this_week();
+
+        foreach ($overrideItems as $item) {
+            $start = new DateTime($item->startDateTime);
+            $end = new DateTime($item->endDateTime);
+
+            if ($start < $mondayThisWeek) {
+                $diff = $start->diff($mondayThisWeek);
+                $start->add($diff);
+            }
+
+            if ($end > $sundayThisWeek) {
+                $diff = $sundayThisWeek->diff($end);
+                $end->sub($diff);
+            }
+
+            $startMidnight = new DateTime($start->format('Y-m-d') . '00:00:00');
+            $endMidnight = new DateTime($end->format('Y-m-d') . '00:00:00');
+
+            // Get the number of days this week that the item will occur on
+            $days = $startMidnight->diff($endMidnight)->days + 1;
+
+
+
+
+            if ($days == 1) {
+                $dayName = strtolower($start->format('l'));
+                $from = $start->format('H:i');
+                $to = $end->format('H:i');
+
+                $slot = self::create_slot();
+                $slot['name'] = $item->title;
+                $slot['description'] = $item->description;
+                $slot['from'] = $from;
+                $slot['to'] = $to;
+                $slot['live'] = self::isLive($dayName, $from, $to) ? true : false;
+                $slot['override'] = true;
+
+                $diff = $start->diff($end);
+                $slot['duration'] = ($diff->days * 24 * 60) + ($diff->h * 60) + $diff->i;
+
+                $response[$dayName][] = $slot;
+            }
+            else if ($days >= 2) {
+                $from = $start->format('H:i');
+                $to = $end->format('H:i');
+
+                for ($i = 0; $i < $days; $i++) {
+                    $dayName = strtolower($start->format('l'));
+
+                    $slot = self::create_slot();
+                    $slot['name'] = $item->title;
+                    $slot['description'] = $item->description;
+
+                    $slot['live'] = self::isLive($dayName, $from, $to) ? true : false;
+                    $slot['override'] = true;
+
+                    if ($i == 0) {
+                        $slot['from'] = $from;
+
+                        // Set the duration as the difference between the start time and
+                        // 24:00 that day
+                        $startToMidnight = $start->diff(new DateTime($start->format('Y-m-d') . '24:00:00'));
+                        $slot['duration'] = ($startToMidnight->days * 24 * 60) + ($startToMidnight->h * 60) + $startToMidnight->i;
+                    }
+                    else if ($i == $days - 1) {
+                        // If the slot is 0 length then don't include it
+                        if ($from == '00:00' && $to == '00:00') {
+                            continue;
+                        }
+
+                        $midnightToEnd = $end->diff(new DateTime($start->format('Y-m-d') . '00:00:00'));
+                        $slot['duration'] = ($midnightToEnd->days * 24 * 60) + ($midnightToEnd->h * 60) + $midnightToEnd->i;
+
+                        $slot['to'] = $to;
+                    }
+
+                    $response[$dayName][] = $slot;
+
+                    // Add one to the day, for next iteration
+                    $start->add(new DateInterval('P1D'));
+                }
+            }
+        }
 
         return $response;
     }

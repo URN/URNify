@@ -1,0 +1,11 @@
+h3 {
+    margin-top: 30px;
+}
+
+.new-override-form {
+    width: 480px;
+}
+
+.datetime-inputs input {
+    width: 100px;
+}
