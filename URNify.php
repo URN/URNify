@@ -29,7 +29,6 @@ require 'API.php';
 require 'Endpoint.php';
 require 'endpoints/ScheduleEndpoint.php';
 require 'endpoints/ScheduleWeekEndpoint.php';
-require 'endpoints/ScheduleDayEndpoint.php';
 require 'endpoints/CurrentSongEndpoint.php';
 require 'endpoints/SendMessageEndpoint.php';
 require 'endpoints/VarsityMatchesEndpoint.php';
@@ -91,7 +90,6 @@ class URNify {
 
     public static function create_api() {
         API::add_endpoint(new ScheduleWeekEndpoint('/schedule/week$', 'schedule_week'));
-        API::add_endpoint(new ScheduleDayEndpoint('/schedule/day/(monday|tuesday|wednesday|thursday|friday|saturday|sunday)$', 'schedule_day_$matches[1]'));
         API::add_endpoint(new CurrentSongEndpoint('/current_song$', 'current_song'));
         API::add_endpoint(new SendMessageEndpoint('/send_message$', 'send_message'));
         API::add_endpoint(new VarsityMatchesEndpoint('/varsity/matches$', 'varsity_matches'));
