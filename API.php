@@ -33,6 +33,11 @@ class API {
                         header('Access-Control-Request-Headers: X-Requested-With, accept, content-type');
                         header('Access-Control-Allow-Methods: GET, POST');
 
+                        // Disable caching in debug mode
+                        if (WP_DEBUG) {
+                            die($output = json_encode($endpoint->get_output($match)));
+                        }
+
                         // If it's a POST request, don't cache anything
                         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             die(json_encode($endpoint->get_output($match)));
