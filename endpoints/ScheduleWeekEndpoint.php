@@ -179,6 +179,6 @@ class ScheduleWeekEndpoint extends ScheduleEndpoint {
             }
         }
 
-        return $response;
+        return self::remove_overlaps($response);
     }
 }
