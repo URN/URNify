@@ -9,6 +9,8 @@ class SendMessageEndpoint extends Endpoint {
 
             if (strpos($_SERVER['HTTP_USER_AGENT'], 'URN Android') !== false) {
                 $type = 'android';
+            } else if (strpos($_SERVER['HTTP_USER_AGENT'], 'URN iOS') !== false) {
+                $type = 'ios';
             }
 
             $url = 'http://int.urn1350.net:8080/web/submit_message.php?type=' . $type . '&message=' . urlencode($_POST['message']);
